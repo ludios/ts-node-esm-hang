@@ -9,45 +9,22 @@ export class AssertionError extends Error {
 	}
 }
 
-// In all of our assert functions e.g. `A` or `A.eq`, we require the user to
-// explicitly pass the symbol `A.fn` to indicate that they want a function to
-// be called to get the message. This prevents the unintended calling of a
-// function in some variable that was expected to contain a string.
-function _appendExtraMessage(message: string, extraMessage?: string | Symbol, messageFn?: () => string) {
-	if (extraMessage === A.fn) {
-		// If function returns undefined, append value anyway
-		message += `: ${messageFn!()}`;
-	} else if (extraMessage !== undefined) {
-		// We might prefer to check for arg count instead
-		// of checking for `undefined`, but using ...args would
-		// probably be slower.
-		message += `: ${extraMessage}`;
-	}
-	return message;
-}
-
-export function A(value: unknown, extraMessage?: string | Symbol, messageFn?: () => string) {
+export function A(value: unknown) {
 	if (!value) {
-		const message = _appendExtraMessage(
-			`A(...): ${inspect(value)} not truthy`, extraMessage, messageFn);
-		throw new AssertionError(message, A);
+		throw new AssertionError("fail", A);
 	}
 }
 
 A.fn = Symbol("A.fn");
 
-A.eq = function eq<T>(a: T, b: T, extraMessage?: string | Symbol, messageFn?: () => string) {
+A.eq = function eq<T>(a: T, b: T) {
 	if (a !== b) {
-		const message = _appendExtraMessage(
-			`A.eq(...): ${inspect(a)} !== ${inspect(b)}`, extraMessage, messageFn);
-		throw new AssertionError(message, A.eq);
+		throw new AssertionError("fail", A.eq);
 	}
 };
 
-A.neq = function neq<T>(a: T, b: T, extraMessage?: string | Symbol, messageFn?: () => string) {
+A.neq = function neq<T>(a: T, b: T) {
 	if (a === b) {
-		const message = _appendExtraMessage(
-			`A.neq(...): ${inspect(a)} === ${inspect(b)}`, extraMessage, messageFn);
-		throw new AssertionError(message, A.neq);
+		throw new AssertionError("fail", A.neq);
 	}
 };

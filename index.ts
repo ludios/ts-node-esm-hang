@@ -36,7 +36,7 @@ export function A(value: unknown, extraMessage?: string | Symbol, messageFn?: ()
 
 A.fn = Symbol("A.fn");
 
-A.eq = function eq(a: any, b: any, extraMessage?: string | Symbol, messageFn?: () => string) {
+A.eq = function eq<T>(a: T, b: T, extraMessage?: string | Symbol, messageFn?: () => string) {
 	if (a !== b) {
 		const message = _appendExtraMessage(
 			`A.eq(...): ${inspect(a)} !== ${inspect(b)}`, extraMessage, messageFn);
@@ -44,42 +44,10 @@ A.eq = function eq(a: any, b: any, extraMessage?: string | Symbol, messageFn?: (
 	}
 };
 
-A.neq = function neq(a: any, b: any, extraMessage?: string | Symbol, messageFn?: () => string) {
+A.neq = function neq<T>(a: T, b: T, extraMessage?: string | Symbol, messageFn?: () => string) {
 	if (a === b) {
 		const message = _appendExtraMessage(
 			`A.neq(...): ${inspect(a)} === ${inspect(b)}`, extraMessage, messageFn);
 		throw new AssertionError(message, A.neq);
-	}
-};
-
-A.lt = function lt(a: any, b: any, extraMessage?: string | Symbol, messageFn?: () => string) {
-	if (!(a < b)) {
-		const message = _appendExtraMessage(
-			`A.lt(...): !(${inspect(a)} < ${inspect(b)})`, extraMessage, messageFn);
-		throw new AssertionError(message, A.lt);
-	}
-};
-
-A.lte = function lte(a: any, b: any, extraMessage?: string | Symbol, messageFn?: () => string) {
-	if (!(a <= b)) {
-		const message = _appendExtraMessage(
-			`A.lte(...): !(${inspect(a)} <= ${inspect(b)})`, extraMessage, messageFn);
-		throw new AssertionError(message, A.lte);
-	}
-};
-
-A.gt = function gt(a: any, b: any, extraMessage?: string | Symbol, messageFn?: () => string) {
-	if (!(a > b)) {
-		const message = _appendExtraMessage(
-			`A.gt(...): !(${inspect(a)} > ${inspect(b)})`, extraMessage, messageFn);
-		throw new AssertionError(message, A.gt);
-	}
-};
-
-A.gte = function gte(a: any, b: any, extraMessage?: string | Symbol, messageFn?: () => string) {
-	if (!(a >= b)) {
-		const message = _appendExtraMessage(
-			`A.gte(...): !(${inspect(a)} >= ${inspect(b)})`, extraMessage, messageFn);
-		throw new AssertionError(message, A.gte);
 	}
 };
